@@ -1,4 +1,4 @@
-import {CREATE_TODO, REMOVE_TODO, MARK_COMPLETED} from './actions';
+import {CREATE_TODO, REMOVE_TODO, MARK_COMPLETED, LOAD_TODOS_IN_PROGRESS, LOAD_TODOS_SUCCESS, LOAD_TODOS_FAILURE} from './actions';
 
 // reducers are a just a function that controls a store in the resource store 
 
@@ -8,14 +8,13 @@ export const todos = (state = [], action) => {
 
     switch (type) {
         case CREATE_TODO: {
-            const {text} = payload; // defined in the action creator
-            const newTodo = {text, isCompleted: false};
-            return state.concat(newTodo); // never mutate the state
+            const {todo} = payload; // defined in the action creator
+            return state.concat(todo); // never mutate the state
         }
 
         case REMOVE_TODO: {
-            const {text} = payload; // defined in the action creator
-            return state.filter(todo => todo.text !== text);
+            const {todo: todoToRemove} = payload; // defined in the action creator
+            return state.filter(todo => todo.id !== todoToRemove.id);
         }
 
         case MARK_COMPLETED: {
@@ -28,8 +27,29 @@ export const todos = (state = [], action) => {
             }); // if equal text delete it
         }
 
+        case LOAD_TODOS_SUCCESS: {
+            const {todos} = payload
+            return todos;
+        }
+
+        case LOAD_TODOS_IN_PROGRESS: 
+        case LOAD_TODOS_FAILURE: 
         default: {
             return state;
         }
     }
 }
+
+export const isLoading = (state = false, action) => {
+    const {type} = action;
+
+    switch(type){
+        case LOAD_TODOS_IN_PROGRESS:
+            return true;
+        case LOAD_TODOS_SUCCESS:
+        case LOAD_TODOS_FAILURE:
+            return false;
+        default:
+            return state;
+    }
+} 
