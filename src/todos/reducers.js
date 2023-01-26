@@ -18,10 +18,10 @@ export const todos = (state = [], action) => {
         }
 
         case MARK_COMPLETED: {
-            const {text} = payload; // defined in the action creator
+            const {todo: updatedTodo} = payload; // defined in the action creator
             return state.map(todo => {
-                if (todo.text === text){
-                    return {text, isCompleted: true};
+                if (todo.id === updatedTodo.id){
+                    return updatedTodo;
                 }
                 return todo;
             }); // if equal text delete it
