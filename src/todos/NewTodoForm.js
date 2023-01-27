@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './NewTodoForm.css';
 import { connect } from 'react-redux';
 import { addTodoRequest } from './thunks';
+import { getTodos } from './selectors';
 
 // connect()(NewTodoForm)
 
@@ -28,7 +29,7 @@ const NewTodoForm = ({todos, onCreatePressed}) => {
 
 // state is the object that represents the entire redux state, job is to take the state and return picies of that state that we need for this component
 const mapStateToProps = (state) => ({
-    todos: state.todos, // get the todos global state
+    todos: getTodos(state), // get the todos global state
 });
 
 // dispatch is a function that allows action responses
